@@ -1,0 +1,3 @@
+chaindata/*
+ethash/*
+!.gitkeep

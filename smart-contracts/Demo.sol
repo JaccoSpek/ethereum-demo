@@ -23,6 +23,9 @@ contract Demo {
     // winner
     address winner;
 
+    // is the game still open
+    bool open = true;
+
     // constructor
     function Demo(){
         owner = msg.sender;
@@ -31,7 +34,7 @@ contract Demo {
     // register guess, can only be called by participants (not owner)
     function guess(uint number) notOwner {
         // see if caller has guessed can only guess when final number hasn't been set
-        if (pepernoten == 0 && !guessed[msg.sender]) {
+        if (open && !guessed[msg.sender]) {
             // can only guess once
             guessed[msg.sender] = true;
             // register guess
@@ -52,7 +55,8 @@ contract Demo {
 
     // close game, and determine winner
     function close(uint number) onlyOwner {
-        if (pepernoten == 0 && number > 0) {
+        if (open && number > 0) {
+            open = false;
             pepernoten = number;
 
             address closest;

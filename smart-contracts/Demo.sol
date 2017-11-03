@@ -8,9 +8,17 @@ contract Demo {
     // number of pepernoten
     uint pepernoten;
 
-    // mapping of guesses
-    mapping (address => uint) guesses;
+    // mapping of addresses that guessed
     mapping (address => bool) guessed;
+    mapping (address => uint) guesses;
+
+    struct Guess {
+        address guesser;
+        uint guess;
+    }
+
+    // guessers
+    Guess[] public guesses_array;
 
     // constructor
     function Demo(){
@@ -20,10 +28,11 @@ contract Demo {
     // register guess
     function guess(uint number) notOwner {
         // see if caller has guessed
-        if (pepernoten > 0 && !guessed[msg.sender]) {
+        if (pepernoten != 0 && !guessed[msg.sender]) {
             // can only guess once
             guessed[msg.sender] = true;
             // register guess
+            guesses_array.push(Guess(msg.sender, number));
             guesses[msg.sender] = number;
         }
     }

@@ -1,3 +1,4 @@
 chaindata/*
 ethash/*
 !.gitkeep
+.idea

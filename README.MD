@@ -1,4 +1,11 @@
-Pull the ethereum image:
+# Ethereum demonstrator
+## System requirements
+- [docker](https://www.docker.com/)
+- [ethereum wallet](https://github.com/ethereum/mist/releases)
+- network connectivity
+
+## Setup the demo:
+Pull the ethereum image from docker hub:
 ```bash
 $ docker pull ethereum/client-go 
 ```
@@ -22,16 +29,20 @@ Open new terminal and attach to the node:
 ```bash
 $ docker exec -it geth_client geth attach ipc:chaindata/geth.ipc
 ```
-Get enode ("enode://[HASH]@[::]:30303"):
-```bash
-> admin.nodeInfo.enode
+Get enode (`enode://[HASH]@[::]:30303`):
+```javascript
+admin.nodeInfo.enode
 ```
 To connect to a node:
-```bash
-> admin.addPeer("enode://[HASH]@[IP]:30303")
+```javascript
+admin.addPeer("enode://[HASH]@[IP]:30303")
 ```
 Verify if peer is connected:
-```bash
+```javascript
 admin.peers
 ```
-
+## Access the chain using ethereum wallet:
+Start the ethereum wallet:
+```bash
+$ ethereumwallet --rpc http://[IP]:[PORT]
+```

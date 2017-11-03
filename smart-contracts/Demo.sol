@@ -2,6 +2,11 @@ pragma solidity ^0.4.0;
 
 
 contract Demo {
+    struct Guess {
+        address guesser;
+        uint guess;
+    }
+
     // owner of the contract
     address public owner;
 
@@ -12,28 +17,26 @@ contract Demo {
     mapping (address => bool) guessed;
     mapping (address => uint) guesses;
 
-    struct Guess {
-        address guesser;
-        uint guess;
-    }
+    // array of guesses
+    Guess[] public guessesArray;
 
-    // guessers
-    Guess[] public guesses_array;
+    // winner
+    address winner;
 
     // constructor
     function Demo(){
         owner = msg.sender;
     }
 
-    // register guess
+    // register guess, can only be called by participants (not owner)
     function guess(uint number) notOwner {
-        // see if caller has guessed
-        if (pepernoten != 0 && !guessed[msg.sender]) {
+        // see if caller has guessed can only guess when final number hasn't been set
+        if (pepernoten == 0 && !guessed[msg.sender]) {
             // can only guess once
             guessed[msg.sender] = true;
             // register guess
-            guesses_array.push(Guess(msg.sender, number));
             guesses[msg.sender] = number;
+            guessesArray.push(Guess(msg.sender,number));
         }
     }
 
@@ -45,6 +48,40 @@ contract Demo {
     // verify anyones guess
     function getGuess(address guesser) constant returns(uint){
         return guesses[guesser];
+    }
+
+    // close game, and determine winner
+    function close(uint number) onlyOwner {
+        if (pepernoten == 0 && number > 0) {
+            pepernoten = number;
+
+            address closest;
+            int closestDist = -1;
+            for (uint i = 0; i < guessesArray.length; i++) {
+                // distance from real value
+                int dist = (pepernoten - guessesArray[i].guess) * -1;
+                // if first
+                if (closestDist == -1) {
+                    closest = guessesArray[i].guesser;
+                    closestDist = dist;
+                } else { // rest
+                    if (dist < closestDist) {
+                        closestDist = dist;
+                        closest = guessesArray[i].guesser;
+                    }
+                }
+            }
+            winner = closest;
+        }
+    }
+
+    // check if I won the game
+    function didIWin() constant returns(bool) {
+        return msg.sender == winner;
+    }
+
+    function winner() constant returns(address) {
+        return winner;
     }
 
     // modifier: Function can not be called by owner

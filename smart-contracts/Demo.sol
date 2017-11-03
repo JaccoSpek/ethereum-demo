@@ -5,18 +5,18 @@ contract Demo {
     // guess struct
     struct Guess {
         address guesser;
-        uint guess;
+        int guess;
     }
 
     // owner of the contract
     address public owner;
 
     // number of pepernoten
-    uint public pepernoten;
+    int public pepernoten;
 
     // mapping of addresses that guessed
     mapping (address => bool) guessed;
-    mapping (address => uint) guesses;
+    mapping (address => int) guesses;
 
     // array of guesses
     Guess[] guessesArray;
@@ -26,7 +26,7 @@ contract Demo {
 
     // is the game still open
     bool public open = true;
-    uint public diff;
+    int public diff;
 
     // constructor
     function Demo(){
@@ -34,7 +34,7 @@ contract Demo {
     }
 
     // register guess, can only be called by participants (not owner)
-    function guess(uint number) notOwner {
+    function guess(int number) notOwner {
         // see if caller has guessed can only guess when final number hasn't been set
         if (open && !guessed[msg.sender]) {
             // can only guess once
@@ -46,26 +46,26 @@ contract Demo {
     }
 
     // verify my guess
-    function getMyGuess() constant returns(uint) {
+    function getMyGuess() constant returns(int) {
         return guesses[msg.sender];
     }
 
     // verify anyones guess
-    function getGuess(address guesser) constant returns(uint){
+    function getGuess(address guesser) constant returns(int){
         return guesses[guesser];
     }
 
     // close game, and determine winner
-    function close(uint number) onlyOwner {
+    function close(int number) onlyOwner {
         if (open && number > 0) {
             open = false;
             pepernoten = number;
 
             address closest;
-            uint closestDist;
+            int closestDist;
             for (uint i = 0; i < guessesArray.length; i++) {
                 // distance from real value
-                uint dist = (pepernoten - guessesArray[i].guess) * -1;
+                int dist = (pepernoten - guessesArray[i].guess) * -1;
                 // if first
                 if (i == 0) {
                     closest = guessesArray[i].guesser;

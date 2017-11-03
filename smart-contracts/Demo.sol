@@ -65,7 +65,11 @@ contract Demo {
             int closestDist;
             for (uint i = 0; i < guessesArray.length; i++) {
                 // distance from real value
-                int dist = (pepernoten - guessesArray[i].guess) * -1;
+                int dist = pepernoten - guessesArray[i].guess;
+                // make absolute
+                if (dist < 0) {
+                    dist = dist * -1;
+                }
                 // if first
                 if (i == 0) {
                     closest = guessesArray[i].guesser;

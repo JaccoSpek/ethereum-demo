@@ -63,7 +63,7 @@ contract Demo {
             int closestDist = -1;
             for (uint i = 0; i < guessesArray.length; i++) {
                 // distance from real value
-                int dist = (pepernoten - guessesArray[i].guess) * -1;
+                int dist = (int(pepernoten) - guessesArray[i].guess) * -1;
                 // if first
                 if (closestDist == -1) {
                     closest = guessesArray[i].guesser;
@@ -84,7 +84,7 @@ contract Demo {
         return msg.sender == winner;
     }
 
-    function winner() constant returns(address) {
+    function getWinner() constant returns(address) {
         return winner;
     }
 

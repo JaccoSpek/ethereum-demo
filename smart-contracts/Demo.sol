@@ -2,6 +2,7 @@ pragma solidity ^0.4.0;
 
 
 contract Demo {
+    // guess struct
     struct Guess {
         address guesser;
         uint guess;
@@ -11,20 +12,21 @@ contract Demo {
     address public owner;
 
     // number of pepernoten
-    uint pepernoten;
+    uint public pepernoten;
 
     // mapping of addresses that guessed
     mapping (address => bool) guessed;
     mapping (address => uint) guesses;
 
     // array of guesses
-    Guess[] public guessesArray;
+    Guess[] guessesArray;
 
     // winner
     address winner;
 
     // is the game still open
-    bool open = true;
+    bool public open = true;
+    int public diff;
 
     // constructor
     function Demo(){
@@ -63,7 +65,7 @@ contract Demo {
             int closestDist = -1;
             for (uint i = 0; i < guessesArray.length; i++) {
                 // distance from real value
-                int dist = (int(pepernoten) - guessesArray[i].guess) * -1;
+                int dist = (int(pepernoten - guessesArray[i].guess)) * -1;
                 // if first
                 if (closestDist == -1) {
                     closest = guessesArray[i].guesser;
@@ -76,6 +78,7 @@ contract Demo {
                 }
             }
             winner = closest;
+            dist = closestDist;
         }
     }
 

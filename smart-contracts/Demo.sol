@@ -26,7 +26,7 @@ contract Demo {
 
     // is the game still open
     bool public open = true;
-    int public diff;
+    uint public diff;
 
     // constructor
     function Demo(){
@@ -62,12 +62,12 @@ contract Demo {
             pepernoten = number;
 
             address closest;
-            int closestDist = -1;
+            uint closestDist;
             for (uint i = 0; i < guessesArray.length; i++) {
                 // distance from real value
-                int dist = (int(pepernoten - guessesArray[i].guess)) * -1;
+                uint dist = (pepernoten - guessesArray[i].guess) * -1;
                 // if first
-                if (closestDist == -1) {
+                if (i == 0) {
                     closest = guessesArray[i].guesser;
                     closestDist = dist;
                 } else { // rest
@@ -78,7 +78,7 @@ contract Demo {
                 }
             }
             winner = closest;
-            dist = closestDist;
+            diff = closestDist;
         }
     }
 

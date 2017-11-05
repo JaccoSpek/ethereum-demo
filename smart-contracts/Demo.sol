@@ -9,7 +9,7 @@ contract Demo {
     }
 
     // owner of the contract
-    address public owner;
+    address owner;
 
     // number of pepernoten
     int public pepernoten;
@@ -33,6 +33,7 @@ contract Demo {
         owner = msg.sender;
     }
 
+    event Vote(address);
     // register guess, can only be called by participants (not owner)
     function guess(int number) notOwner {
         // see if caller has guessed can only guess when final number hasn't been set
@@ -42,6 +43,7 @@ contract Demo {
             // register guess
             guesses[msg.sender] = number;
             guessesArray.push(Guess(msg.sender,number));
+            Vote(msg.sender);
         }
     }
 
@@ -53,6 +55,11 @@ contract Demo {
     // verify anyones guess
     function getGuess(address guesser) constant returns(int){
         return guesses[guesser];
+    }
+
+    // get number of votes
+    function getGuessCount() constant returns(uint) {
+        return guessesArray.length;
     }
 
     // close game, and determine winner

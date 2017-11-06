@@ -21,8 +21,8 @@ contract Demo {
     // array of guesses
     Guess[] guessesArray;
 
-    // winner
-    address winner;
+    // winners
+    address[] winners;
 
     // is the game still open
     bool public open = true;
@@ -68,7 +68,6 @@ contract Demo {
             open = false;
             pepernoten = number;
 
-            address closest;
             int closestDist;
             for (uint i = 0; i < guessesArray.length; i++) {
                 // distance from real value
@@ -79,27 +78,35 @@ contract Demo {
                 }
                 // if first
                 if (i == 0) {
-                    closest = guessesArray[i].guesser;
+                    winners.push(guessesArray[i].guesser);
                     closestDist = dist;
                 } else { // rest
-                    if (dist < closestDist) {
+                    if (dist == closestDist) {
+                        winners.push(guessesArray[i].guesser);
+                    } else if (dist < closestDist) {
                         closestDist = dist;
-                        closest = guessesArray[i].guesser;
+                        winners.length = 0;
+                        winners.push(guessesArray[i].guesser);
                     }
                 }
             }
-            winner = closest;
             diff = closestDist;
         }
     }
 
-    // check if I won the game
-    function didIWin() constant returns(bool) {
-        return msg.sender == winner;
+    // check if caller won the game
+    function did_i_win() constant returns(bool) {
+        for(uint i = 0; i < winners.length; i++) {
+            if (winners[i] == msg.sender) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    function getWinner() constant returns(address) {
-        return winner;
+    // total number of winners
+    function numWinners() constant returns(uint) {
+        return winners.length;
     }
 
     // modifier: Function can not be called by owner

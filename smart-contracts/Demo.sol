@@ -114,6 +114,13 @@ contract Demo {
         return false;
     }
 
+    // get winner
+    function getWinner(uint i) constant returns(address){
+        if (i >= winners.length) return;
+
+        return winners[i];
+    }
+
     // total number of winners
     function numWinners() constant returns(uint) {
         return winners.length;

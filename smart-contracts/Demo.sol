@@ -104,6 +104,16 @@ contract Demo {
         return false;
     }
 
+    // check if address won the game
+    function did_addr_win(address addr) constant returns(bool) {
+        for(uint i = 0; i < winners.length; i++) {
+            if (winners[i] == addr) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // total number of winners
     function numWinners() constant returns(uint) {
         return winners.length;

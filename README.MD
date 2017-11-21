@@ -1,4 +1,4 @@
-# Ethereum demonstrator
+# TNO Ethereum demonstrator
 ## System requirements
 - [docker](https://www.docker.com/)
 - [ethereum wallet](https://github.com/ethereum/mist/releases)
